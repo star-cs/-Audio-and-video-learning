@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "avformat.h": "c",
+        "cstdint": "cpp",
+        "fstream": "cpp"
+    }
+}

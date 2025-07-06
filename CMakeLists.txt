@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.20)
+project(AV_Learning C CXX)  # 支持 C 和 C++
+
+set(CMAKE_CXX_STANDARD 17)
+
+# FFmpeg路径
+set(FFMPEG_ROOT "${CMAKE_SOURCE_DIR}/ffmpeg-4.2.1-win32-dev")
+include_directories(${FFMPEG_ROOT}/include)
+link_directories(${FFMPEG_ROOT}/lib)
+
+# 统一可执行程序输出目录
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+
+# 添加子目录
+add_subdirectory(01_ffmpeg)
