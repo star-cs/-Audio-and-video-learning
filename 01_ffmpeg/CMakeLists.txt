@@ -14,7 +14,9 @@ foreach(src_file ${SRC_FILES})
         avformat
         avutil
         swscale
+        libswresample
     )
 endforeach()
 
-add_subdirectory(04-flv_parser_cplus)
+add_subdirectory(04_flv_parser_cplus)
+add_subdirectory(09_02_audio_resample)
