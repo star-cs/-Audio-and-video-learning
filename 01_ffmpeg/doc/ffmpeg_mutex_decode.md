@@ -329,6 +329,7 @@ Audio Tag Data 区域开始：
     ![](../../img/yuv420p.png)
 
 # 7. FFmpeg 解码 MP4
+[ffmpeg 解析 MP4 --> AAC + H264 代码](../07_demux_mp4.c)
 ## 7.1 MP4 格式
 https://blog.csdn.net/jidushanbojueA/article/details/138411437
 

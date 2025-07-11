@@ -3,7 +3,8 @@
 (https://blog.csdn.net/leixiaohua1020/article/details/14214705)
 
 在使用FFMPEG进行开发的时候，AVFormatContext是一个贯穿始终的数据结构，很多函数都要用到它作为参数。它是FFMPEG解封装（flv，mp4，rmvb，avi）功能的结构体。下面看几个主要变量的作用（在这里考虑解码的情况）：
-- struct AVInputFormat *iformat：输入数据的封装格式
+- `struct AVInputFormat *iformat`：输入数据的封装格式，由`avformat_open_input()`设置
+- `struct AVOutputFormat *oformat`，由`avformat_alloc_output_context2`设置
 - AVIOContext *pb：输入数据的缓存
 - unsigned int nb_streams：视音频流的个数（老版本通过遍历nb_streams，streams得到流信息）
 - AVStream **streams：视音频流（数组个数为nb_streams，详见AVStream结构体分析）
@@ -24,7 +25,6 @@ AVStream 重要的变量如下所示：
 - AVDictionary *metadata：元数据信息
 - AVRational avg_frame_rate：帧率（注：对视频来说，这个挺重要的）
 - AVPacket attached_pic：附带的图片。比如说一些MP3，AAC音频文件附带的专辑封面。
-
 
 
 ## AVPakcet
@@ -79,10 +79,10 @@ AVFrame结构体一般用于存储原始数据（即非压缩数据，例如对�
 - const char *long_name：编解码器的名字，全称，比较长
 - enum AVMediaType type：指明了类型，是视频（AVMEDIA_TYPE_VIDEO），音频（AVMEDIA_TYPE_AUDIO），还是字幕（AVMEDIA_TYPE_SUBTITLE），空（AVMEDIA_TYPE_UNKNOW）
 - enum AVCodecID id：ID，不重复
-- const AVRational *supported_framerates：支持的帧率（仅视频）
-- const enum AVPixelFormat *pix_fmts：支持的像素格式（仅视频）例如：AV_PIX_FMT_YUV420p，AV_PIX_FMT_YUVV422 等
-- const int *supported_samplerates：支持的采样率（仅音频）
-- const enum AVSampleFormat *sample_fmts：支持的采样格式（仅音频）例如：AV_SAMPLE_FMT_U8，AV_SAMPLE_FMT_FLTP 等
+- `const AVRational *supported_framerates`：支持的帧率（仅视频）
+- `const enum AVPixelFormat *pix_fmts`：支持的像素格式（仅视频）例如：AV_PIX_FMT_YUV420p，AV_PIX_FMT_YUVV422 等
+- `const int *supported_samplerates`：支持的采样率（仅音频）
+- `const enum AVSampleFormat *sample_fmts`：支持的采样格式（仅音频）。源码仅有 AV_SAMPLE_FMT_FLTP 
 - const uint64_t *channel_layouts：支持的声道数（仅音频）
 - int priv_data_size：私有数据的大小
 
@@ -197,6 +197,19 @@ AVCodecParser 是一个静态结构体，它定义了一种解析特定编码格
 ## AVIOContext 自定义IO上下文
 [AVIOContext 使用案例](./ffmpeg_mutex_decode.md/#8-avio-内存输入模式)
 
+
+
+## AVInputFormat 
+AVFormatContext 结构体的成员 
+
+
+## AVOutputFormat
+​角色​：​封装器（Muxer）的接口，定义如何将数据包写入容器（如生成MP4文件）。
+​用途​：仅用于输出，提供格式封装的静态方法集合。
+​关键方法​：
+write_header：写入文件头
+write_packet：写入数据包
+write_trailer：写入文件尾
 
 
 # 1. 函数

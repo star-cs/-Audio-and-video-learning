@@ -20,3 +20,4 @@ endforeach()
 
 add_subdirectory(04_flv_parser_cplus)
 add_subdirectory(09_02_audio_resample)
+add_subdirectory(12_mp4_muxer)
