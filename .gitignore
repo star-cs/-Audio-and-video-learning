@@ -12,7 +12,12 @@ _deps
 CMakeUserPresets.json
 
 build
-bin
+bin/01_ffmpeg/*
+
+!/bin/01_ffmpeg/believe.mp4
+!/bin/01_ffmpeg/believe.ts
+!/bin/01_ffmpeg/believe.flv
+!/bin/01_ffmpeg/sound_in_sync_test.mp4
 
 # CLion
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can

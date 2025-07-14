@@ -282,7 +282,7 @@ static void add_stream(OutputStream *ost, AVFormatContext *oc, AVCodec **codec,e
         - 音频设置为 1/采样率 (音频需要高精度)
         - 视频设置为 1/帧率 (AVCodecContext 和 AVStream 时间基一致)
 
-5. `AV_CODEC_FLAG_GLOBAL_HEADER` 某些格式(如MP4)需要全局头
+5. `AV_CODEC_FLAG_GLOBAL_HEADER` 某些容器（如 MP4、MKV）要求将编解码参数存储在文件头部的全局区域，而不是分散在视频帧中。启用此标志可满足此类容器的要求。（简单来说，aac编码不会生成adts头）
 
 > 主要：OutputStream保存中间指针，比如 新创建的AVStream*，给 AVStream* 赋值 id 流ID，CodecContext 编码器上下文（编码参数/上下文）
 
@@ -335,3 +335,30 @@ static void add_stream(OutputStream *ost, AVFormatContext *oc, AVCodec **codec,e
 1. add_stream
 2. 时间基
 
+# MP4合成
+[MP4实例合成](../../01_ffmpeg/13_mp4_muxer/main.cc)
+
+```mermaid
+flowchart LR
+
+    A[sound_in_sync_test.mp4
+        音视频同步测试文件]
+    B[pcm 44.1khz 2ch S16]
+    
+    B1[AAC 编码
+        pts]
+    
+    C[yuv 25fps 720x576 yuv420p]
+    C1[h264编码
+        pts]
+
+    D[mp4]
+
+    A --> B -->|s16le --> f32p| B1 -->|new stream| D
+    A --> C --> C1 -->|new stream| D
+```
+
+1. 音频编码：采样率，通道数，采样格式（比特率）
+2. 视频编码：帧率，分辨率，像素格式（比特率，B帧）
+3. 同步问题： time_base  
+    - 视频AVCodecContext 需要手动设置，音频AVCodecContext经过avcodec_open2会自动设置为 1/采样率
